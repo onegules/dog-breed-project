@@ -50,6 +50,10 @@ def predict():
 
     return None
 
+@app.route('/process', methods=['GET'])
+def process():
+    return render_template('process.html')
+
 
 if __name__ == '__main__':
     # app.run(port=5002, threaded=False)
