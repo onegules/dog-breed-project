@@ -18,6 +18,9 @@ from tensorflow.keras.preprocessing import image
 import numpy as np
 #from util import base64_to_pil
 
+#from model.bottleneck.extract_bottleneck_features import *
+#from model.detectors.dog_detector import *
+#from model.detectors.face_detector import *
 from NeuralNetwork import *
 
 # Declare a flask app
@@ -30,7 +33,7 @@ from keras.applications.mobilenet_v2 import MobileNetV2
 model = MobileNetV2(weights='imagenet')
 
 ###
-weight_path = 'saved_models/weights.best.from_VGG19.hdf5'
+weight_path = 'model/saved_model/weights.best.from_VGG19.hdf5'
 neural = NeuralNetwork(weight_path)
 ###
 
@@ -88,7 +91,7 @@ def predict():
         #result = result.replace('_', ' ').capitalize()
 
         pred_proba = 1
-        result2 = neural.predict_breed('uploaded_images/IMG_20200113_181002.jpg')
+        result2 = neural.predict_breed('model/uploaded_images/test.jpg')
 
         print(result2)
         # Serialize the result, you can add additional fields
