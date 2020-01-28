@@ -39,14 +39,14 @@ def predict():
     if request.method == 'POST':
         img = base64_to_pil(request.json)
         print(img.filename)
-        path = 'model/uploaded_images/test2.jpg'
+        path = 'image.jpg'
         img.save(path)
         pred_proba = 1
-        result2 = neural.predict_breed(path)
+        result = neural.predict_breed(path)
 
         #print(result2)
         # Serialize the result, you can add additional fields
-        return jsonify(result=result2, probability=pred_proba)
+        return jsonify(result=result, probability=pred_proba)
 
     return None
 
