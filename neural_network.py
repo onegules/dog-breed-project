@@ -19,8 +19,10 @@ import logging
 
 logger = logging.getLogger('root')
 
+weight_path = 'model/saved_model/weights.best.from_VGG19.hdf5'
+
 class NeuralNetwork():
-    def __init__(self, weight_path):
+    def __init__(self, weight=weight_path):
         #tf.reset_default_graph()
         #self.session = tf.Session()
         #self.graph = tf.get_default_graph()
@@ -109,9 +111,8 @@ def dog_detector(img_path):
 
 
 if __name__ == '__main__':
-    weight_path = 'model/saved_model/weights.best.from_VGG19.hdf5'
     #print(face_detector('uploaded_images/test.jpg') + '0')
-    model = NeuralNetwork(weight_path)
+    model = NeuralNetwork()
     #print(face_detector('uploaded_images/test.jpg') + '1')
     result = model.predict_breed('model/uploaded_images/test.jpg')
     print(result)
