@@ -93,10 +93,13 @@ The working web app:
 
 ![Screenshot](/data/screenshot.PNG)
 
-The metric we were looking at was accuracy: how close the model could predict the
+The metric we were looking at was accuracy: how accurately the model could predict the
 dog breed while given a train set and a test set. The model trained from the VGG19
 architecture resulted in a 73.9% accuracy. To improve this, I would suggest tuning
 the parameters, use data augmentation or increase the data set size.
+
+This result was very surprising and the model seems to do a good job predicting
+on various pictures as seen in the process page. 
 
 ## Acknowledgments
 
