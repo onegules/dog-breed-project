@@ -99,7 +99,7 @@ architecture resulted in a 73.9% accuracy. To improve this, I would suggest tuni
 the parameters, use data augmentation or increase the data set size.
 
 This result was very surprising and the model seems to do a good job predicting
-on various pictures as seen in the process page. 
+on various pictures as seen in the process page.
 
 ## Acknowledgments
 
