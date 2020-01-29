@@ -7,8 +7,6 @@ from glob import glob
 import numpy as np
 import tensorflow as tf
 from model.extract_bottleneck_features import *
-#from detectors.dog_detector import *
-#from detectors.face_detector  import *
 import cv2
 from keras.applications.resnet50 import ResNet50
 from keras.preprocessing import image
@@ -21,14 +19,10 @@ logger = logging.getLogger('root')
 
 weight_path = 'model/saved_model/weights.best.from_VGG19.hdf5'
 
+
 class NeuralNetwork():
     def __init__(self, weight=weight_path):
-        #tf.reset_default_graph()
-        #self.session = tf.Session()
-        #self.graph = tf.get_default_graph()
 
-
-        # for some reason in a flask app the graph/session needs to be used in the init else it hangs on other threads
         logging.info("neural network initialised")
 
         # load list of dog names
@@ -39,19 +33,19 @@ class NeuralNetwork():
 
         self.split_dog_names = []
         for name in self.dog_names:
-            self.split_dog_names.append(name.split(".",1)[1])
+            self.split_dog_names.append(name.split(".", 1)[1])
 
         # Define model Architecture
         self.VGG19_model = Sequential()
-        self.VGG19_model.add(GlobalAveragePooling2D(input_shape = self.train_VGG19.shape[1:]))
-        self.VGG19_model.add(Dense(133, activation = 'softmax'))
+        self.VGG19_model.add(GlobalAveragePooling2D(input_shape=self.train_VGG19.shape[1:]))
+        self.VGG19_model.add(Dense(133, activation='softmax'))
 
         # Compile the model
-        self.VGG19_model.compile(loss = 'categorical_crossentropy', optimizer = 'rmsprop', metrics = ['accuracy'])
+        self.VGG19_model.compile(loss='categorical_crossentropy',
+                                 optimizer='rmsprop', metrics=['accuracy'])
 
         # Load the model
         self.VGG19_model.load_weights(weight_path)
-
 
     def model_predict_breed(self, img_path):
         # extract bottleneck features
@@ -62,7 +56,6 @@ class NeuralNetwork():
         result = self.split_dog_names[np.argmax(predicted_vector)]
 
         return result
-
 
     def predict_breed(self, path):
         if dog_detector(path):
@@ -79,6 +72,7 @@ class NeuralNetwork():
 # extract pre-trained face detector
 face_cascade = cv2.CascadeClassifier('model/haarcascades/haarcascade_frontalface_alt.xml')
 
+
 # returns "True" if face is detected in image stored at img_path
 def face_detector(img_path):
     img = cv2.imread(img_path)
@@ -91,6 +85,7 @@ def face_detector(img_path):
 # define ResNet50 model
 ResNet50_model = ResNet50(weights='imagenet')
 
+
 # Preprocess the data
 def path_to_tensor(img_path):
     # loads RGB image as PIL.Image.Image type
@@ -100,26 +95,19 @@ def path_to_tensor(img_path):
     # convert 3D tensor to 4D tensor with shape (1, 224, 224, 3) and return 4D tensor
     return np.expand_dims(x, axis=0)
 
+
 def paths_to_tensor(img_paths):
     list_of_tensors = [path_to_tensor(img_path) for img_path in tqdm(img_paths)]
     return np.vstack(list_of_tensors)
+
 
 def ResNet50_predict_labels(img_path):
     # returns prediction vector for image located at img_path
     img = preprocess_input(path_to_tensor(img_path))
     return np.argmax(ResNet50_model.predict(img))
 
+
 # Returns "True" if a dog is detected in the image stored at img_path
 def dog_detector(img_path):
     prediction = ResNet50_predict_labels(img_path)
     return ((prediction <= 268) & (prediction >= 151))
-
-
-if __name__ == '__main__':
-    #print(face_detector('uploaded_images/test.jpg') + '0')
-    model = NeuralNetwork()
-    #print(face_detector('uploaded_images/test.jpg') + '1')
-    #result = model.predict_breed('model/uploaded_images/test.jpg')
-    print(model.dog_names[:10])
-    print(model.split_dog_names[:10])
-    #print(result)
