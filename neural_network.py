@@ -36,6 +36,11 @@ class NeuralNetwork():
         self.train_VGG19 = self.bottleneck_features['train']
         self.test_VGG19 = self.bottleneck_features['test']
         self.dog_names = [item[20:-1] for item in sorted(glob("data/dogImages/train/*/"))]
+
+        self.split_dog_names = []
+        for name in self.dog_names:
+            self.split_dog_names.append(name.split(".",1)[1])
+
         # Define model Architecture
         self.VGG19_model = Sequential()
         self.VGG19_model.add(GlobalAveragePooling2D(input_shape = self.train_VGG19.shape[1:]))
@@ -54,7 +59,7 @@ class NeuralNetwork():
         # obtain predicted vector
         predicted_vector = self.VGG19_model.predict(bottleneck_feature)
         # return dog breed that is predicted by the model
-        result = self.dog_names[np.argmax(predicted_vector)]
+        result = self.split_dog_names[np.argmax(predicted_vector)]
 
         return result
 
@@ -114,5 +119,7 @@ if __name__ == '__main__':
     #print(face_detector('uploaded_images/test.jpg') + '0')
     model = NeuralNetwork()
     #print(face_detector('uploaded_images/test.jpg') + '1')
-    result = model.predict_breed('model/uploaded_images/test.jpg')
-    print(result)
+    #result = model.predict_breed('model/uploaded_images/test.jpg')
+    print(model.dog_names[:10])
+    print(model.split_dog_names[:10])
+    #print(result)
