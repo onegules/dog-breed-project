@@ -24,9 +24,9 @@ Put this file in a new folder with the following path ../model/bottleneck_featur
 The requirements to run this project are found in requirements.txt. To install
 them, simply run
 
-'''python
+```python
 pip install -r requirements.txt
-'''
+```
 
 in your console while in the main folder.
 
@@ -34,9 +34,9 @@ in your console while in the main folder.
 
 In the console type in
 
-'''python
+```python
 python app.py
-'''
+```
 
 and go to http://127.0.0.1:5000/
 
